@@ -14,6 +14,8 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 
 import os
 from pathlib import Path
+import dj_database_url
+
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -23,12 +25,12 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/5.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-qf%!vj4#blp8rm4tpf7)_6n(h^xw2dpy(w5oo&a-cs1mof5cs)'
+SECRET_KEY = os.environ.get('SECRET_KEY', 'clave-respaldo') 
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = os.environ.get('DEBUG','True')== 'True'
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = os.environ.get('ALLOWED_HOSTS', 'localhost').split(',')
 
 
 # Application definition
@@ -79,15 +81,9 @@ WSGI_APPLICATION = 'login.wsgi.application'
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases
 
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql',  # Cambiado de sqlite a postgresql
-        'NAME': 'SistemaMantenimientoAutomotriz',  # Nombre de la base de datos
-        'USER': 'postgres',  # Usuario de la base de datos
-        'PASSWORD':'password',  # Contrasea de mi usuario de la base de datos
-        'HOST': 'localhost',  # Host de la base de datos
-        'PORT': '5432',  # Puerto de la base de datos
+    'default': dj_database_url.config(default= os.environ.get('DATABASE_URL'))
     }  
-}
+
 
 
 # Password validation
