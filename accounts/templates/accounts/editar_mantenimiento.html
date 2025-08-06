@@ -1,0 +1,202 @@
+<!--Template creado para manejar la edición de mantenimientos--> {% load static %}
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8">
+    <title>Editar Mantenimiento</title>
+    <style>
+      body {
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        background: linear-gradient(135deg, #1bbfe3 0%, #eb8a28 100%);
+        padding: 40px;
+        margin: 0;
+      }
+
+      /* Estilos generales para el template */
+      .container {
+        max-width: 700px;
+        margin: auto;
+        background: white;
+        padding: 40px;
+        border-radius: 20px;
+        box-shadow: 0 15px 40px rgba(0, 0, 0, 0.2);
+      }
+
+      h1 {
+        text-align: center;
+        color: #333;
+        margin-bottom: 30px;
+      }
+
+      .form-group {
+        margin-bottom: 20px;
+      }
+
+      label {
+        font-weight: bold;
+        display: block;
+        margin-bottom: 6px;
+        color: #444;
+      }
+
+      .form-control {
+        width: 100%;
+        padding: 12px;
+        font-size: 1rem;
+        border-radius: 10px;
+        border: 1px solid #ccc;
+        background: #f9f9f9;
+      }
+
+      .form-control:focus {
+        border-color: #1bbfe3;
+        background: #fff;
+        outline: none;
+        box-shadow: 0 0 0 3px rgba(27, 191, 227, 0.2);
+      }
+
+      .btn-primary {
+        background: linear-gradient(135deg, #4CAF50, #45a049);
+        color: white;
+        padding: 15px;
+        font-size: 1rem;
+        border: none;
+        width: 100%;
+        border-radius: 12px;
+        cursor: pointer;
+        margin-top: 20px;
+        transition: background 0.3s ease;
+      }
+
+      .btn-primary:hover {
+        background: #3e8e41;
+      }
+
+      /*Estilos para los mensajes de alerta*/
+      .alert {
+        padding: 15px;
+        border-radius: 10px;
+        color: white;
+        font-weight: 600;
+        margin-bottom: 20px;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+      }
+
+      .alert-success {
+        background-color: #28a745;
+      }
+
+      .alert-error {
+        background-color: #dc3545;
+      }
+
+      .alert-info {
+        background-color: #17a2b8;
+      }
+
+      .field-error {
+        color: #dc3545;
+        font-size: 14px;
+        margin-top: 5px;
+        padding: 5px;
+        background: rgba(220, 53, 69, 0.1);
+        border-radius: 5px;
+      }
+
+      .btn-volver {
+        display: inline-block;
+        background: #007bff;
+        color: white;
+        padding: 12px 20px;
+        border-radius: 10px;
+        text-decoration: none;
+        font-weight: bold;
+        transition: background 0.3s;
+      }
+
+      .btn-volver:hover {
+        background: #0056b3;
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Contenedor principal para el formulario de edición de mantenimiento -->
+    <!-- Este contenedor incluye un título, mensajes de alerta y un formulario para editar los detalles del mantenimiento -->
+    <!--Se manejan los errores con alertas personalizadas.-->
+    <div class="container">
+      <h1>Editar Mantenimientos Registrados</h1> {% if messages %} {% for message in messages %} {% if message.tags == 'error' %} <div class="alert alert-error">
+        {{ message }}
+      </div> {% elif message.tags == 'success' %} <div class="alert alert-success">
+        {{ message }}
+      </div> {% elif message.tags == 'info' %} <div class="alert alert-info">
+        {{ message }}
+      </div> {% else %} <div class="alert alert-error">
+        {{ message }}
+      </div> {% endif %} {% endfor %} {% endif %} <form method="POST"> {% csrf_token %} <div class="form-group">
+          <label for="{{ form.vehiculo.id_for_label }}">Vehículo</label>
+          {{ form.vehiculo }} {% for error in form.vehiculo.errors %} <div class="field-error">{{ error }}</div> {% endfor %}
+        </div>
+        <div class="form-group">
+          <label for="{{ form.tipo.id_for_label }}">Tipo de mantenimiento</label>
+          {{ form.tipo }} {% for error in form.tipo.errors %} <div class="field-error">{{ error }}</div> {% endfor %}
+        </div>
+        <div class="form-group">
+          <label for="{{ form.fecha.id_for_label }}">Fecha de realización</label>
+          {{ form.fecha }} {% for error in form.fecha.errors %} <div class="field-error">{{ error }}</div> {% endfor %}
+        </div>
+        <div class="form-group">
+          <label for="{{ form.descripcion.id_for_label }}">Descripción</label>
+          {{ form.descripcion }} {% for error in form.descripcion.errors %} <div class="field-error">{{ error }}</div> {% endfor %}
+        </div>
+        <div class="form-group">
+          <label for="{{ form.costo.id_for_label }}">Costo</label>
+          {{ form.costo }} {% for error in form.costo.errors %} <div class="field-error">{{ error }}</div> {% endfor %}
+        </div>
+        <div class="form-group">
+          <label for="{{ form.repuestos_utilizados.id_for_label }}">Repuestos utilizados</label>
+          {{ form.repuestos_utilizados }} {% for error in form.repuestos_utilizados.errors %} <div class="field-error">{{ error }}</div> {% endfor %}
+        </div>
+        <div class="form-group">
+          <label for="{{ form.proximo_mantenimiento.id_for_label }}">Fecha del próximo mantenimiento</label>
+          {{ form.proximo_mantenimiento }} {% for error in form.proximo_mantenimiento.errors %} <div class="field-error">{{ error }}</div> {% endfor %}
+        </div>
+        <button type="submit" class="btn-primary">Guardar Cambios</button>
+      </form>
+      <div style="text-align: center; margin-top: 20px;">
+        <a href="{% url 'menu_principal' %}" class="btn-volver">Volver al menú principal</a>
+        <!-- Botón para volver al menú principal -->
+      </div>
+    </div>
+    <script>
+      /* Script para manejar la lógica de los campos de fecha */
+      // Este script asegura que la fecha del próximo mantenimiento no sea anterior a la fecha de realización
+      document.addEventListener('DOMContentLoaded', function() {
+        const fechaInput = document.querySelector('input[type="date"][name="fecha"]');
+        const proximaInput = document.querySelector('input[type="date"][name="proximo_mantenimiento"]');
+        if (fechaInput && proximaInput) {
+          fechaInput.addEventListener('change', function() {
+            if (this.value) {
+              proximaInput.min = this.value;
+            }
+          });
+          if (fechaInput.value) {
+            proximaInput.min = fechaInput.value;
+          }
+        }
+        // Validación de campos de fecha para permitir solo números
+        const dateInputs = document.querySelectorAll('input[type="date"]');
+        dateInputs.forEach(input => {
+          input.addEventListener('input', function() {
+            this.value = this.value.replace(/[^0-9\-]/g, '');
+          });
+          input.addEventListener('keypress', function(e) {
+            const allowedKeys = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '-', 'Backspace', 'Delete', 'ArrowLeft', 'ArrowRight', 'Tab'];
+            if (!allowedKeys.includes(e.key)) {
+              e.preventDefault();
+            }
+          });
+        });
+      });
+    </script>
+  </body>
+</html>

@@ -1,0 +1,157 @@
+<!-- Este template es el responsable para mostrar el formulario 
+ de registro de los vehículos--> {% load static %}
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registrar Vehículo</title>
+    <style>
+      body {
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        background: linear-gradient(135deg, #1bbfe3 0%, #eb8a28 100%);
+        min-height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 20px;
+      }
+
+      /* Estilo del contenedor del formulario */
+      .form-container {
+        background: rgba(255, 255, 255, 0.95);
+        backdrop-filter: blur(10px);
+        border-radius: 20px;
+        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+        padding: 50px;
+        width: 100%;
+        max-width: 700px;
+        border: 1px solid rgba(255, 255, 255, 0.2);
+      }
+
+      h2 {
+        text-align: center;
+        color: #333;
+        margin-bottom: 30px;
+      }
+
+      .form-group {
+        margin-bottom: 20px;
+      }
+
+      label {
+        display: block;
+        margin-bottom: 8px;
+        color: #333;
+        font-weight: 500;
+      }
+
+      /* Estilo de los campos de entrada */
+      input,
+      select {
+        width: 100%;
+        padding: 15px;
+        border: 2px solid #e0e0e0;
+        border-radius: 10px;
+        font-size: 16px;
+        background: rgba(255, 255, 255, 0.9);
+        transition: all 0.3s ease;
+      }
+
+      input:focus,
+      select:focus {
+        outline: none;
+        border-color: #667eea;
+        box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        transform: translateY(-2px);
+      }
+
+      /* Estilo del botón de envío */
+      .submit-btn {
+        width: 100%;
+        padding: 15px;
+        background: linear-gradient(135deg, #667eea, #764ba2);
+        color: white;
+        border: none;
+        border-radius: 10px;
+        font-size: 16px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.3s ease;
+      }
+
+      .submit-btn:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 10px 20px rgba(102, 126, 234, 0.3);
+      }
+
+      @media (max-width: 480px) {
+        .form-container {
+          padding: 30px 20px;
+        }
+      }
+
+      /* Alertas */
+      .alert {
+        padding: 15px;
+        border-radius: 10px;
+        color: white;
+        font-weight: 600;
+        margin-bottom: 20px;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+      }
+
+      .alert-success {
+        background-color: #28a745;
+      }
+
+      .alert-error {
+        background-color: #dc3545;
+      }
+
+      .alert-info {
+        background-color: #17a2b8;
+      }
+
+      /* Estilo del botón de volver al menú principal */
+      .btn-volver {
+        display: inline-block;
+        background: #007bff;
+        color: white;
+        padding: 12px 20px;
+        border-radius: 10px;
+        text-decoration: none;
+        font-weight: bold;
+        transition: background 0.3s;
+      }
+
+      .btn-volver:hover {
+        background: #0056b3;
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Contenedor principal del formulario -->
+    <div class="form-container">
+      <h2>Registrar Vehículo</h2> {% if messages %} {% for message in messages %} <div class="alert {% if message.tags == 'success' %}alert-success{% elif message.tags == 'error' %}alert-error{% else %}alert-info{% endif %}">
+        {{ message }}
+      </div> {% endfor %} {% endif %} <form method="post" enctype="multipart/form-data"> {% csrf_token %} {{ form.as_p }}
+        <button type="submit" class="submit-btn">Guardar Vehículo</button>
+      </form>
+      <div style="text-align: center; margin-top: 20px;">
+        <a href="{% url 'menu_principal' %}" class="btn-volver"> Volver al menú principal </a>
+        <!-- Botón para volver al menú principal -->
+      </div>
+    </div>
+    <script>
+      //Script para ocultar las alertas luego de 4s
+      setTimeout(() => {
+        document.querySelectorAll('.alert').forEach(alert => {
+          alert.style.transition = 'opacity 0.5s ease';
+          alert.style.opacity = '0';
+          setTimeout(() => alert.remove(), 500);
+        });
+      }, 4000);
+    </script>
+  </body>
+</html>

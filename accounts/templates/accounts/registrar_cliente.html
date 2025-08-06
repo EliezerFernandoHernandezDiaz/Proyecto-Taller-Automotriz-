@@ -1,0 +1,171 @@
+<!--Este template es creado para registrar los clientes, contiene el formulario
+para completar cada campo, primero se registra el cliente, posteriormente 
+el vehiculo y por ultimo el mantenimiento -->
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registrar Cliente</title>
+    <style>
+      body {
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        background: linear-gradient(135deg, #1bbfe3 0%, #eb8a28 100%);
+        min-height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 20px;
+      }
+
+      /* Estilo del contenedor del formulario */
+      .form-container {
+        background: rgba(255, 255, 255, 0.95);
+        backdrop-filter: blur(10px);
+        border-radius: 20px;
+        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+        padding: 50px;
+        width: 100%;
+        max-width: 600px;
+        border: 1px solid rgba(255, 255, 255, 0.2);
+      }
+
+      h2 {
+        text-align: center;
+        color: #333;
+        margin-bottom: 30px;
+      }
+
+      .form-group {
+        margin-bottom: 20px;
+      }
+
+      label {
+        display: block;
+        margin-bottom: 8px;
+        color: #333;
+        font-weight: 500;
+      }
+
+      input[type="text"],
+      input[type="email"],
+      input[type="tel"] {
+        width: 100%;
+        padding: 15px;
+        border: 2px solid #e0e0e0;
+        border-radius: 10px;
+        font-size: 16px;
+        background: rgba(255, 255, 255, 0.9);
+        transition: all 0.3s ease;
+        box-sizing: border-box;
+      }
+
+      input[type="text"]:focus,
+      input[type="email"]:focus,
+      input[type="tel"]:focus {
+        outline: none;
+        border-color: #667eea;
+        box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        transform: translateY(-2px);
+      }
+
+      .submit-btn {
+        width: 100%;
+        padding: 15px;
+        background: linear-gradient(135deg, #667eea, #764ba2);
+        color: white;
+        border: none;
+        border-radius: 10px;
+        font-size: 16px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.3s ease;
+      }
+
+      .submit-btn:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 10px 20px rgba(102, 126, 234, 0.3);
+      }
+
+      /* Estilos para los mensajes de error y éxito */
+      .error-message {
+        color: #dc3545;
+        font-size: 14px;
+        margin-top: 5px;
+      }
+
+      .success-message {
+        background: linear-gradient(135deg, #28a745, #20c997);
+        color: white;
+        padding: 15px;
+        border-radius: 10px;
+        font-weight: bold;
+        margin-bottom: 20px;
+        text-align: center;
+      }
+
+      /* Estilo de alerta de error */
+      .error-alert {
+        background: linear-gradient(135deg, #dc3545, #c82333);
+        color: white;
+        padding: 15px;
+        border-radius: 10px;
+        font-weight: bold;
+        margin-bottom: 20px;
+        text-align: center;
+      }
+
+      @media (max-width: 480px) {
+        .form-container {
+          padding: 30px 20px;
+        }
+      }
+
+      /* Estilo del botón de volver al menú principal */
+      .btn-volver {
+        display: inline-block;
+        background: #007bff;
+        color: white;
+        padding: 12px 20px;
+        border-radius: 10px;
+        text-decoration: none;
+        font-weight: bold;
+        transition: background 0.3s;
+      }
+
+      .btn-volver:hover {
+        background: #0056b3;
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Contenedor del formulario 
+     tambien se muestran errores para cada campo si estos los datos insertados no son válidos o
+     están vacios -->
+    <div class="form-container">
+      <h2>Registrar Cliente</h2> {% if messages %} <div> {% for message in messages %} <div class="{% if message.tags == 'success' %}success-message{% else %}error-alert{% endif %}">
+          {{ message }}
+        </div> {% endfor %} </div> {% endif %} <form method="post"> {% csrf_token %} {% if form.non_field_errors %} <div class="error-alert"> {% for error in form.non_field_errors %} <div>{{ error }}</div> {% endfor %} </div> {% endif %} <div class="form-group">
+          <label for="{{ form.nombre.id_for_label }}">Nombre</label>
+          {{ form.nombre }} {% for error in form.nombre.errors %} <div class="error-message">{{ error }}</div> {% endfor %}
+        </div>
+        <div class="form-group">
+          <label for="{{ form.dui.id_for_label }}">DUI</label>
+          {{ form.dui }} {% for error in form.dui.errors %} <div class="error-message">{{ error }}</div> {% endfor %}
+        </div>
+        <div class="form-group">
+          <label for="{{ form.telefono.id_for_label }}">Teléfono</label>
+          {{ form.telefono }} {% for error in form.telefono.errors %} <div class="error-message">{{ error }}</div> {% endfor %}
+        </div>
+        <div class="form-group">
+          <label for="{{ form.email.id_for_label }}">Email</label>
+          {{ form.email }} {% for error in form.email.errors %} <div class="error-message">{{ error }}</div> {% endfor %}
+        </div>
+        <button type="submit" class="submit-btn">Guardar Cliente</button>
+        <!-- añado el boton para volver al inicio -->
+        <div style="text-align: center; margin-top: 30px;">
+          <a href="{% url 'menu_principal' %}" class="btn-volver">Volver al menú principal</a>
+      </form>
+    </div>
+  </body>
+</html>

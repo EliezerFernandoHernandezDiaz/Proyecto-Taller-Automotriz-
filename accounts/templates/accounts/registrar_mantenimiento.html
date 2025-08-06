@@ -1,0 +1,160 @@
+<!--
+  Este template se utiliza para generar el formulario de registro de mantenimiento.
+este formulario permite a los usuarios introducir y enviar los detalles del mantenimiento que se realizará
+al vehiculo que han subido--> {% load static %}
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registrar Mantenimiento</title>
+    <style>
+      body {
+        margin: 0;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        background: linear-gradient(135deg, #1bbfe3 0%, #eb8a28 100%);
+        min-height: 100vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: 20px;
+      }
+
+      /* Estilo del contenedor del formulario */
+      .form-container {
+        background: rgba(255, 255, 255, 0.95);
+        border-radius: 20px;
+        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+        padding: 40px;
+        width: 100%;
+        max-width: 700px;
+        border: 1px solid rgba(255, 255, 255, 0.2);
+      }
+
+      h2 {
+        text-align: center;
+        color: #333;
+        margin-bottom: 30px;
+      }
+
+      .form-group {
+        margin-bottom: 20px;
+      }
+
+      label {
+        display: block;
+        font-weight: 600;
+        margin-bottom: 8px;
+        color: #333;
+      }
+
+      .form-control {
+        width: 100%;
+        padding: 15px;
+        border: 2px solid #e0e0e0;
+        border-radius: 10px;
+        font-size: 16px;
+        background: rgba(255, 255, 255, 0.9);
+        transition: all 0.3s ease;
+      }
+
+      .form-control:focus {
+        outline: none;
+        border-color: #667eea;
+        box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+      }
+
+      .submit-btn {
+        width: 100%;
+        padding: 15px;
+        background: linear-gradient(135deg, #667eea, #764ba2);
+        color: white;
+        border: none;
+        border-radius: 10px;
+        font-size: 16px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.3s ease;
+      }
+
+      .submit-btn:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 10px 20px rgba(102, 126, 234, 0.3);
+      }
+
+      /* Estilo del botón de volver */
+      .btn-volver {
+        display: inline-block;
+        background: #007bff;
+        color: white;
+        padding: 12px 20px;
+        border-radius: 10px;
+        text-decoration: none;
+        font-weight: bold;
+        transition: background 0.3s;
+      }
+
+      .btn-volver:hover {
+        background: #0056b3;
+      }
+    </style>
+  </head>
+  <body>
+    <!-- estructura principal de la pagina
+     al igual que en otras, tambien contiene mensajes de error en caso de que los datos insertados
+     no sean validos o estén vacios
+  -->
+    <div class="form-container">
+      <h2>Registrar Mantenimiento</h2>
+      <form method="post"> {% csrf_token %} {% for field in form %} <div class="form-group">
+          <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+          {{ field }} {% if field.errors %} <div style="color: #e74c3c; font-size: 14px; margin-top: 5px; padding: 8px; background: rgba(231, 76, 60, 0.1); border-radius: 5px;">
+            {{ field.errors }}
+          </div> {% endif %}
+        </div> {% endfor %} <button type="submit" class="submit-btn">Guardar Mantenimiento</button>
+      </form>
+      <div style="text-align: center; margin-top: 20px;">
+        <a href="{% url 'menu_principal' %}" class="btn-volver"> Volver al menú principal </a>
+        <!-- boton para volver al menu principal-->
+      </div>
+    </div>
+    <script>
+      /*Script para manejar la lógica de los campos de fecha*/
+      // Esperar a que el DOM esté completamente cargado
+      document.addEventListener('DOMContentLoaded', function() {
+        const fechaInput = document.querySelector('input[type="date"][name="fecha"]');
+        const proximaInput = document.querySelector('input[type="date"][name="proximo_mantenimiento"]');
+        // Actualizar el minimo del próximo mantenimiento cuando cambie la fecha actual
+        // y establecer el min inicial si ya hay una fecha
+        // Verificar que los inputs existen antes de agregar el evento
+        // Esto es útil para evitar errores si los campos no están presentes en el formulario
+        if (fechaInput && proximaInput) {
+          fechaInput.addEventListener('change', function() {
+            if (this.value) {
+              proximaInput.min = this.value;
+            }
+          });
+          // Establecer el min inicial si ya hay una fecha
+          if (fechaInput.value) {
+            proximaInput.min = fechaInput.value;
+          }
+        }
+        // Se agrga una validación adicional para evitar caracteres inválidos
+        const dateInputs = document.querySelectorAll('input[type="date"]');
+        dateInputs.forEach(input => {
+          input.addEventListener('input', function() {
+            // Remover caracteres no válidos
+            this.value = this.value.replace(/[^0-9\-]/g, '');
+          });
+          input.addEventListener('keypress', function(e) {
+            // Solo permitir números, guiones y teclas de control
+            const allowedKeys = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '-', 'Backspace', 'Delete', 'ArrowLeft', 'ArrowRight', 'Tab'];
+            if (!allowedKeys.includes(e.key)) {
+              e.preventDefault();
+            }
+          });
+        });
+      });
+    </script>
+  </body>
+</html>

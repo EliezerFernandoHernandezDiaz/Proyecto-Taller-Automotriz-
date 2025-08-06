@@ -1,0 +1,192 @@
+<!--Este template practicamente es el primero, se creó para mostrar lo del login --> {% load static %}
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inicio de Sesión</title>
+    <!-- estilo -->
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        background: linear-gradient(135deg, #1bbfe3 0%, #eb8a28 100%);
+        min-height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 20px;
+      }
+
+      .login-container {
+        background: rgba(255, 255, 255, 0.95);
+        backdrop-filter: blur(10px);
+        border-radius: 20px;
+        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+        padding: 50px;
+        width: 100%;
+        max-width: 600px;
+        border: 1px solid rgba(255, 255, 255, 0.2);
+      }
+
+      /*Estilo del logo mostrado en la ventana del login*/
+      .logo {
+        text-align: center;
+        margin-bottom: 30px;
+      }
+
+      .logo-icon {
+        width: 80px;
+        height: 80px;
+        background: linear-gradient(135deg, #4CAF50, #45a049);
+        border-radius: 50%;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        margin-bottom: 15px;
+        box-shadow: 0 10px 20px rgba(76, 175, 80, 0.3);
+      }
+
+      .logo-icon svg {
+        width: 40px;
+        height: 40px;
+        fill: white;
+      }
+
+      .logo h1 {
+        color: #333;
+        font-size: 24px;
+        font-weight: 700;
+        margin-bottom: 5px;
+      }
+
+      .logo p {
+        color: #666;
+        font-size: 14px;
+      }
+
+      .form-group {
+        margin-bottom: 20px;
+      }
+
+      .form-group label {
+        display: block;
+        margin-bottom: 8px;
+        color: #333;
+        font-weight: 500;
+      }
+
+      .form-group input {
+        width: 100%;
+        padding: 15px;
+        border: 2px solid #e0e0e0;
+        border-radius: 10px;
+        font-size: 16px;
+        background: rgba(255, 255, 255, 0.9);
+      }
+
+      .form-group input:focus {
+        outline: none;
+        border-color: #667eea;
+        box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        transform: translateY(-2px);
+      }
+
+      /* Botón de inicio de sesión */
+      .login-btn {
+        width: 100%;
+        padding: 15px;
+        background: linear-gradient(135deg, #667eea, #764ba2);
+        color: white;
+        border: none;
+        border-radius: 10px;
+        font-size: 16px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.3s ease;
+      }
+
+      .login-btn:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 10px 20px rgba(102, 126, 234, 0.3);
+      }
+
+      /* Mensajes de alerta */
+      .alert-box {
+        margin-bottom: 20px;
+      }
+
+      .alert {
+        padding: 14px;
+        border-radius: 10px;
+        font-size: 15px;
+        font-weight: 600;
+        text-align: center;
+        margin-bottom: 20px;
+        color: white;
+        animation: fadeOut 0.5s ease 4s forwards;
+      }
+
+      .alert.success {
+        background-color: #28a745;
+      }
+
+      .alert.error {
+        background-color: #dc3545;
+      }
+
+      .alert.info {
+        background-color: #17a2b8;
+      }
+
+      @keyframes fadeOut {
+        to {
+          opacity: 0;
+          transform: translateY(-10px);
+          height: 0;
+          padding: 0;
+          margin: 0;
+        }
+      }
+
+      /* Estilos responsivos */
+      @media (max-width: 480px) {
+        .login-container {
+          padding: 30px 20px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <!--Estrucutra principal del template-->
+    <div class="login-container">
+      <div id="loginForm">
+        <div class="logo">
+          <div class="logo-icon">
+            <svg viewBox="0 0 24 24">
+              <path d="M18.92 6.01C18.72 5.42 18.16 5 17.5 5h-11c-.66 0-1.22.42-1.42 1.01L3 12v8c0 .55.45 1 1 1h1c.55 0 1-.45 1-1v-1h12v1c0 .55.45 1 1 1h1c.55 0 1-.45 1-1v-8l-2.08-5.99zM6.5 16c-.83 0-1.5-.67-1.5-1.5S5.67 13 6.5 13s1.5.67 1.5 1.5S7.33 16 6.5 16zm11 0c-.83 0-1.5-.67-1.5-1.5s.67-1.5 1.5-1.5 1.5.67 1.5 1.5-.67 1.5-1.5 1.5zM5 11l1.5-4.5h11L19 11H5z" />
+            </svg>
+          </div>
+          <h1>Inicio de Sesión</h1>
+          <p>Sistema de Mantenimiento Vehicular</p>
+        </div> {% if messages %} <div class="alert-box"> {% for message in messages %} <div class="alert {% if message.tags == 'success' %}success{% elif message.tags == 'error' %}error{% else %}info{% endif %}">
+            {{ message }}
+          </div> {% endfor %} </div> {% endif %} <form method="post" class="form-group"> {% csrf_token %} <div class="form-group">
+            <label for="{{ form.username.id_for_label }}">Usuario</label>
+            {{ form.username }}
+          </div>
+          <div class="form-group">
+            <label for="{{ form.password.id_for_label }}">Contraseña</label>
+            {{ form.password }}
+          </div>
+          <button type="submit" class="login-btn">Iniciar Sesión</button>
+        </form>
+      </div>
+    </div>
+  </body>
+</html>
