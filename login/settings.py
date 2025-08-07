@@ -34,26 +34,23 @@ ALLOWED_HOSTS = os.environ.get('ALLOWED_HOSTS', '127.0.0.1,localhost').split(','
 
 
 #Configuración de cloudinary (para manejar las imagenes en la nube)
-
 if os.environ.get('CLOUDINARY_CLOUD_NAME'):
- import cloudinary 
- import cloudinary.uploader
- import cloudinary.api
+    import cloudinary 
+    import cloudinary.uploader
+    import cloudinary.api
 
- cloudinary.config(
+    cloudinary.config(
+        cloud_name = os.getenv('CLOUDINARY_CLOUD_NAME'),  # Corregido el typo: era 'CLOUDINARY_CLOUD_NAMWE'
+        api_key= os.getenv('CLOUDINARY_API_KEY'),
+        api_secret= os.getenv('CLOUDINARY_API_SECRET'),
+        secure = True
+    )
 
-    cloud_name = os.getenv('CLOUDINARY_CLOUD_NAMWE'),
-    api_key= os.getenv('CLOUDINARY_API_KEY'),
-    api_secret= os.getenv('CLOUDINARY_API_SECRET'),
-    secure = True
- )
+    # Utilizando cloudinary para media files
+    DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
 
-#Utilizando cloudinary para media files
- DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
-  
-# Application definition
-
- INSTALLED_APPS = [
+# Application definition - CORREGIDO: Des-indentado para que siempre se ejecute
+INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -100,9 +97,6 @@ WSGI_APPLICATION = 'login.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases
 
-import os 
-import dj_database_url
-
 # Base de datos
 if os.environ.get('DATABASE_URL'):
     DATABASES = {
@@ -116,7 +110,6 @@ else:
             'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
         }
     }
-
 
 
 # Password validation
@@ -153,12 +146,11 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.1/howto/static-files/
 
-STATIC_URL = 'static/'
+STATIC_URL = '/static/'  # Eliminé la duplicación
 
-STATICFILES_DIRS=[
+STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'static'), 
 ]
-
 
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
@@ -169,15 +161,6 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 
-#Configuración de archivos multimedia
-STATIC_URL= '/static/'
-
-STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, 'static'),
-]
-
-
-#Configuración para archivos multimedia subidos por el usuario
+# Configuración para archivos multimedia subidos por el usuario
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
-
