@@ -36,8 +36,21 @@ ALLOWED_HOSTS = os.environ.get('ALLOWED_HOSTS', '127.0.0.1,localhost').split(','
 #Configuración de cloudinary (para manejar las imagenes en la nube)
 
 if os.environ.get('CLOUDINARY_CLOUD_NAME'):
-  
+ import cloudinary 
+ import cloudinary.uploader
+ import cloudinary.api
 
+ cloudinary.config(
+
+    cloud_name = os.getenv('CLOUDINARY_CLOUD_NAMWE'),
+    api_key= os.getenv('CLOUDINARY_API_KEY'),
+    api_secret= os.getenv('CLOUDINARY_API_SECRET'),
+    secure = True
+ )
+
+#Utilizando cloudinary para media files
+ DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
+  
 # Application definition
 
  INSTALLED_APPS = [
@@ -48,7 +61,7 @@ if os.environ.get('CLOUDINARY_CLOUD_NAME'):
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'widget_tweaks', #libreria 
-    'accounts' #esto se realiza prácticamente desde que se empieza a codificar, es agregar la app a settings.py
+    'accounts', #esto se realiza prácticamente desde que se empieza a codificar, es agregar la app a settings.py
     'cloudinary_storage', # se agrega para manejar archivos multimedia en la nube 
     'cloudinary', 
 ]
