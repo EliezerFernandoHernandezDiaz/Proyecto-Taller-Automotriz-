@@ -1,4 +1,5 @@
-from django.urls import path
+from django.urls import path 
+
  # Importando el módulo path para definir las rutas de la aplicación
 #aca se importan las funciones que se programaron en las vistas y se van a utilizar en las urls
 from .views import menu_principal,login_view, cierre, registrar_cliente, editar_cliente, eliminar_cliente, registrar_vehiculo, editar_vehiculo, eliminar_vehiculo, editar_mantenimiento, eliminar_mantenimiento, registrar_mantenimiento, listar_vehiculos, ver_mantenimientos, listar_clientes

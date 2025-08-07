@@ -33,11 +33,14 @@ DEBUG = os.environ.get('DEBUG','True')== 'True'
 ALLOWED_HOSTS = os.environ.get('ALLOWED_HOSTS', '127.0.0.1,localhost').split(',')
 
 
+#Configuración de cloudinary (para manejar las imagenes en la nube)
 
+if os.environ.get('CLOUDINARY_CLOUD_NAME'):
+  
 
 # Application definition
 
-INSTALLED_APPS = [
+ INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -46,6 +49,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'widget_tweaks', #libreria 
     'accounts' #esto se realiza prácticamente desde que se empieza a codificar, es agregar la app a settings.py
+    'cloudinary_storage', # se agrega para manejar archivos multimedia en la nube 
+    'cloudinary', 
 ]
 
 MIDDLEWARE = [
@@ -141,6 +146,7 @@ STATICFILES_DIRS=[
     os.path.join(BASE_DIR, 'static'), 
 ]
 
+
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
 
@@ -161,3 +167,4 @@ STATICFILES_DIRS = [
 #Configuración para archivos multimedia subidos por el usuario
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+
