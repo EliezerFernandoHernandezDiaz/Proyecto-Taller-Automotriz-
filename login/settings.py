@@ -48,6 +48,9 @@ if os.environ.get('CLOUDINARY_CLOUD_NAME'):
 
     # Utilizando cloudinary para media files
     DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
+else:
+    # Usar almacenamiento local por defecto cuando no hay Cloudinary configurado
+    DEFAULT_FILE_STORAGE = 'django.core.files.storage.FileSystemStorage'
 
 # Application definition - CORREGIDO: Des-indentado para que siempre se ejecute
 INSTALLED_APPS = [
