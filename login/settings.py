@@ -137,6 +137,13 @@ USE_TZ = True
 
 STATIC_URL = 'static/'
 
+STATICFILES_DIRS=[
+    os.path.join(BASE_DIR, 'static'), 
+]
+
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+
+
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
 
@@ -154,11 +161,3 @@ STATICFILES_DIRS = [
 #Configuración para archivos multimedia subidos por el usuario
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
-
-
-import django 
-django.setup()
-from django.contrib.auth import get_user_model
-
-User= get_user_model(
-)
