@@ -144,25 +144,30 @@ SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")  # útil en Render
 
 #agrego un bloquer de loggin para ver errores en la consola 
 
-LOGGING={
+
+LOGGING = {
     "version": 1,
-    "disable_existing_Loggers": False,
-    "handlers":{
-        "console":{
-            "class:" "logging.StreamHandler"}, 
-    }, 
-
-    "root":{
-        "handlers":["console"], 
-        "level": "INFO", 
-
-    }, 
-
-    "loggers":{
-        "django.request":{"handlers":["console"], "level": "ERROR", "propagate" : True},
-
-        #Importando mi modulo 
-        "accounts":{"handlers":["console"], "level":"INFO", "propagate": True}
+    "disable_existing_loggers": False,  # Corregido: 'l' minúscula
+    "handlers": {
+        "console": {
+            "class": "logging.StreamHandler"  # Corregido: agregadas comillas de cierre
         },
-                          
-    }
+    },
+    "root": {
+        "handlers": ["console"],
+        "level": "INFO",
+    },
+    "loggers": {
+        "django.request": {
+            "handlers": ["console"],
+            "level": "ERROR",
+            "propagate": True
+        },
+        # Importando mi modulo
+        "accounts": {
+            "handlers": ["console"],
+            "level": "INFO",
+            "propagate": True
+        }
+    },
+}
