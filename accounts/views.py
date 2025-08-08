@@ -89,16 +89,27 @@ def eliminar_cliente(request, cliente_id): # Vista para eliminar un cliente
     return redirect('listar_clientes')  # Redirige al listado de clientes después de eliminar
 
 
+import logging #Se importa el módulo de logging para manejar logs dentro de la app 
+logger= logging.getLogger(__name__)
+
 #Se programan las funciones crud para registrar, editar y listar los vehiculos
 # También asegura de que se manejen los archivos para las imágenes de los vehículos
 def registrar_vehiculo(request): # Vista para registrar un nuevo vehículo
     if request.method == 'POST':
         form = VehiculoForm(request.POST, request.FILES)  # Asegurando que se manejen archivos
         # request.FILES es necesario para manejar las imágenes de los vehículos
+        
+        #agregué un try/except para manejar errrores al guardar el vehículo
+       
         if form.is_valid():
-            form.save()
-            messages.success(request, "✅ Vehículo registrado correctamente.✅")
-            return redirect('listar_vehiculos')  # Redirige a la lista de vehiculos  después de registrar el vehículo
+            try:
+                instance= form.save() 
+                messages.success(request, "✅ Vehículo registrado correctamente.✅")
+                return redirect('listar_vehiculos')  # Redirige a la lista de vehiculos  después de registrar el vehículo
+            except Exception as e:
+              logger.exception("Error al registrar el vehículo/subiendo imagenes")
+              messages.error(request, f"Error guardando vehículo: {e.__class__.__name__}: {e}")
+              return render(request, 'accounts/registrar_vehiculo.html',{'form':form})
         else:
          messages.error(request, "❌ No se pudo registrar el vehículo. (Revisar los datos insertados).❌") # Mensaje de error al registrar un vehículo
     else:

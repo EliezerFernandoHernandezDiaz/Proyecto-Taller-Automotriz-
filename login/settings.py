@@ -140,3 +140,29 @@ STORAGES = {
 # --- Misc/Prod
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")  # útil en Render
+
+
+#agrego un bloquer de loggin para ver errores en la consola 
+
+LOGGING={
+    "version": 1,
+    "disable_existing_Loggers": False,
+    "handlers":{
+        "console":{
+            "class:" "logging.StreamHandler"}, 
+    }, 
+
+    "root":{
+        "handlers":["console"], 
+        "level": "INFO", 
+
+    }, 
+
+    "loggers":{
+        "django.request":{"handlers":["console"], "level": "ERROR", "propagate" : True},
+
+        #Importando mi modulo 
+        "accounts":{"handlers":["console"], "level":"INFO", "propagate": True}
+        },
+                          
+    }
